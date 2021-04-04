@@ -1,0 +1,24 @@
+version: "3"
+services: 
+  management:
+    image: n19111002/mysqlcluster:latest
+    command: ndb_mgmd
+  node1:
+    image: n19111002/mysqlcluster:latest
+    command: ndbd
+    depends_on:
+      - management
+  node2:
+    image: n19111002/mysqlcluster:latest
+    command: ndbd
+    depends_on:
+      - management
+  mysqltest:
+    image: n19111002/mysqlcluster:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+    command: mysqld
+    ports: 
+      - 3306:3306
+    depends_on:
+      - management
